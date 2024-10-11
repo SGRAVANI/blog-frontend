@@ -17,7 +17,7 @@ const Blogs = () => {
     useEffect(() => {
         // Fetch blogs from the backend
         const fetchBlogs = async () => {
-            const response = await fetch('http://localhost:8000/api/v1/getblogs');
+            const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/getblogs');
             const data = await response.json();
             setBlogs(data);
         };
@@ -39,7 +39,7 @@ const Blogs = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8000/api/v1/addblog', {
+        const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/addblog', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
