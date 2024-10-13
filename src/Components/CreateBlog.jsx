@@ -234,8 +234,8 @@ const CreateBlog = () => {
     formData.append('userId', newBlog.userId);
     formData.append('location', JSON.stringify(newBlog.location)); // Location as string
 
-     const response = await fetch('http://localhost:8000/api/v1/user/addblog', {
-      //  const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/user/addblog', {
+   //  const response = await fetch('http://localhost:8000/api/v1/user/addblog', {
+        const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/user/addblog', {
       method: 'POST',
       body: formData, // Sending form data (including the file)
     });
