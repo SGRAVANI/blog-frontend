@@ -70,6 +70,11 @@ useEffect(() => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(newBlog.title.length<5)
+    {
+        alert("minimum 5 characters required in title")
+        return;
+    }
     const formData = new FormData();
     formData.append('title', newBlog.title);
     formData.append('subheading', newBlog.subheading);

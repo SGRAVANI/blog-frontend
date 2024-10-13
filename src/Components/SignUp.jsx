@@ -49,7 +49,7 @@ let [signupStatus,setSignUpStatus]=useState({color:'',msg:''})
                 
                 setSignUpStatus({color:"green",msg:"user Registerd successfully"})
                 setTimeout(()=>{
-                    navigate("/")
+                    navigate("/login")
                 },500)
 
             } else {
