@@ -176,8 +176,8 @@ const CreateBlog = () => {
   useEffect(()=>{
     if (typeof window !== 'undefined') {
         if (localStorage.getItem("user")) {
-          let userData = localStorage.getItem("user");
-          setUser(JSON.parse(userData));
+          let userData = JSON.parse(localStorage.getItem("user"));
+          setUser(userData);
           setNewBlog((prev)=>{return {...prev,userId:userData._id}})
         }
       }
@@ -202,7 +202,7 @@ const CreateBlog = () => {
         });
     }
     getLocation();
-  }, []);
+  }, [user]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -234,8 +234,8 @@ const CreateBlog = () => {
     formData.append('userId', newBlog.userId);
     formData.append('location', JSON.stringify(newBlog.location)); // Location as string
 
-    // const response = await fetch('http://localhost:8000/api/v1/user/addblog', {
-        const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/user/addblog', {
+     const response = await fetch('http://localhost:8000/api/v1/user/addblog', {
+      //  const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/user/addblog', {
       method: 'POST',
       body: formData, // Sending form data (including the file)
     });
