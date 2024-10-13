@@ -30,7 +30,11 @@ let [signupStatus,setSignUpStatus]=useState({color:'',msg:''})
 
         // Make the API request to signup
         try {
-            const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/user/register', {
+        // const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/user/register'
+
+
+            // const response = await fetch('http://localhost:8000/api/v1/user/register', {
+                const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

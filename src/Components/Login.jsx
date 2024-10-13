@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { Context } from './ContextData/ContextData';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ export default function Login() {
     password: ''
   });
   let navigate=useNavigate()
+  let cont=useContext(Context)
 let [loginStatus,setLoginStatus]=useState(false)
   const handleChange = (e) => {
     setFormData({
@@ -23,8 +25,9 @@ let [loginStatus,setLoginStatus]=useState(false)
         email: formData.email,
         password: formData.password,
     };
-
-    fetch("https://blog-backend-veru.onrender.com/api/v1/user/login", {
+//  fetch("https://blog-backend-veru.onrender.com/api/v1/user/login"
+    // fetch("http://localhost:8000/api/v1/user/login", {
+      fetch("https://blog-backend-veru.onrender.com/api/v1/user/login", {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
@@ -33,7 +36,11 @@ let [loginStatus,setLoginStatus]=useState(false)
     })
     .then((res)=>{
       //  console.log(res.status)
-        
+        if(!Response.ok)
+        {
+         
+          return res.json()  
+        }
         return res.json()
 
     })
@@ -41,8 +48,15 @@ let [loginStatus,setLoginStatus]=useState(false)
         //console.log(d)
         console.log(d.message)
         setLoginStatus(d.message)
-        window.localStorage.setItem("user",JSON.stringify(d.user))
-        navigate('/blogs')
+        setTimeout(()=>{
+          if(d.message=="login successful")
+            { 
+            window.localStorage.setItem("user",JSON.stringify(d.user))
+            cont.setUserData(d.user)
+            navigate('/blogs')
+            }
+        },500)
+       
        // if
     })
     .catch((e)=>{

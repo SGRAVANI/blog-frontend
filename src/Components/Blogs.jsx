@@ -1,127 +1,148 @@
 
 import React, { useEffect, useState } from 'react';
+import { Context } from './ContextData/ContextData';
+import { useContext } from 'react';
+import UserBlogList from './UserBlogList';
+import ConfirmAlert from './ConformAlert';
+import AlertMessageCompo from './AlertMessageCompo';
+import CreateBlog from './CreateBlog';
+import { useNavigate } from 'react-router-dom';
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState([]);
     const [greeting, setGreeting] = useState('');
-    let userId=JSON.parse(localStorage.getItem("user"))._id
-    const [newBlog, setNewBlog] = useState({
-        blogTitle: '',
-        image: '',
-        content: '',
-        subheading: '',
-        labels: [],
-        userId:userId
-    });
-
+    const [displayAlert,setDisplayAlert]=useState(false);
+    const[delteConfirmation,setDeleteConfirmation]=useState({id:'',status:false})
+    const [msgData,setMsgData]=useState({message:"",variant:"",f:""})
+    let cont=useContext(Context)
+   let user=JSON.parse(localStorage.getItem("user"))
+   
+   let [f,setF]=useState(false)
+   
+   let navigate=useNavigate()
+  // console.log(cont.userData,"cont")
     useEffect(() => {
         // Fetch blogs from the backend
-        const fetchBlogs = async () => {
-            const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/getblogs');
-            const data = await response.json();
-            setBlogs(data);
-        };
 
+        // const fetchBlogs = async () => {
+        //     // const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/getblogs');
+        // try{
+        //     const response = await fetch('http://localhost:8000/api/v1/user/getblogs');
+        //     const data = await response.json();
+        //     setBlogs(data.data);
+        //     console.log("data of blogs",data)
+        // }
+        // catch(e)
+        // {
+        //     console.log(e.message)
+        // }
+        // };
+        const fetchBlogs = async () => {
+            // const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/getblogs');
+        try{
+            // const response = await fetch(`http://localhost:8000/api/v1/user/getuserblogs?userId=${user._id}`, {
+                const response = await fetch(`https://blog-backend-veru.onrender.com/api/v1/user/getuserblogs?userId=${user._id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });            
+            
+            const data = await response.json();
+            setBlogs(data.data);
+            console.log("data of blogs",data)
+           
+        }
+        catch(e)
+        {
+            console.log(e.message)
+        }
+        };
         // Set a greeting message
-        const userName = 'User'; // Replace this with the actual user's name from login
+        const userName =user.name // Replace this with the actual user's name from login
         setGreeting(`Welcome, ${userName}!`);
         
         fetchBlogs();
-    }, []);
+    }, [f]);
+  
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setNewBlog((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+   function handleDelete(id)
+  {setDisplayAlert(true)
+   setDeleteConfirmation({id:id,status:true})
+    }
+  function handleUpdate(id)
+  {
+   // console.log(id)
+    cont.setBlogId(id);
+    navigate("/updateblog")
+   //setF(!f)
+  }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/addblog', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newBlog),
-        });
 
-        if (response.ok) {
-            const createdBlog = await response.json();
-            setBlogs((prev) => [...prev, createdBlog]);
-            setNewBlog({ blogTitle: '', image: '', content: '', subheading: '', labels: [] });
-        } else {
-            console.error('Failed to create blog');
+ async function handleConfirm()
+    {
+        setDisplayAlert(false)
+       // setMsgData({message:"",variant:"",f:false})
+        if(delteConfirmation.status)
+        {      console.log(delteConfirmation)
+        try {
+            console.log(`http://localhost:8000/api/v1/user/deleteblog/${delteConfirmation.id}`)
+            const response =await fetch(`http://localhost:8000/api/v1/user/deleteblog/${delteConfirmation.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+             console.log(response)
+            if (!response.ok) {
+                setMsgData({msg:"Error occured while deleting",variant:"error",f:true})
+                throw new Error('Failed to delete the blog');
+            }
+    
+            const data = await response.json();
+           alert("deleted")
+           setMsgData({message:"blog is deleted",variant:"success",f:true})
+            console.log(data.message); // Handle success message if needed
+            setDeleteConfirmation({status:false,id:''})
+            setF(!f); // Update the state or UI after successful deletion
+           
+           
+        } catch (error) {
+            setMsgData({msg:"Error occured while deleting",variant:"error",f:true})
+            console.error('Error deleting blog:', error);
         }
-    };
-
+        
+        
+        }
+    }
+    function handleCancel()
+    {setDeleteConfirmation({status:false,id:''})
+     setAlert(false)
+    }
+    function handleCloseMsgData()
+    {
+        setMsgData({message:'',variant:"",f:false})
+    }
     return (
-        <div className="p-6">
-            <h1 className="text-3xl font-bold">{greeting}</h1>
+        <>
+        <div className="pt-[11vh] py-5 mx-auto max-w-[1350px] w-full sm:px-20 px-10">
+            <h1 className="text-2xl font-bold text-right">{greeting}</h1>
+            <div className='flex justify-end'>
+             {/* <CreateBlog  user={user} f={f} setF={setF} /> */}
+             <button onClick={()=>{navigate("/newblog")}} className='mt-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:from-indigo-500 hover:to-purple-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl'>Create New Blog</button>
+            </div>
             <div className="mt-4">
                 <h2 className="text-2xl font-semibold">Available Blogs</h2>
-                <ul className="list-disc pl-5 mt-2">
-                    {blogs.map((blog) => (
-                        <li key={blog._id} className="mt-1">
-                            <h3 className="font-bold">{blog.blogTitle}</h3>
-                            <p>{blog.subheading}</p>
-                        </li>
-                    ))}
-                </ul>
+               
+                <UserBlogList onDelete={handleDelete} onUpdate={handleUpdate} blogs={blogs} user={user} />
             </div>
-            <div className="mt-6">
-                <h2 className="text-2xl font-semibold">Post a New Blog</h2>
-                <form onSubmit={handleSubmit} className="mt-4">
-                    <input
-                        type="text"
-                        name="blogTitle"
-                        placeholder="Blog Title"
-                        value={newBlog.blogTitle}
-                        onChange={handleChange}
-                        className="border p-2 w-full mb-2"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="image"
-                        placeholder="Image URL"
-                        value={newBlog.image}
-                        onChange={handleChange}
-                        className="border p-2 w-full mb-2"
-                        required
-                    />
-                    <textarea
-                        name="content"
-                        placeholder="Content"
-                        value={newBlog.content}
-                        onChange={handleChange}
-                        className="border p-2 w-full mb-2"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="subheading"
-                        placeholder="Subheading"
-                        value={newBlog.subheading}
-                        onChange={handleChange}
-                        className="border p-2 w-full mb-2"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="labels"
-                        placeholder="Labels (comma-separated)"
-                        value={newBlog.labels.join(', ')}
-                        onChange={(e) => handleChange({ target: { name: 'labels', value: e.target.value.split(',') } })}
-                        className="border p-2 w-full mb-2"
-                    />
-                    <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-                        Post Blog
-                    </button>
-                </form>
-            </div>
+            
         </div>
+        {msgData.f &&<AlertMessageCompo  message={msgData.message} type={msgData.variant} onClose={handleCloseMsgData} setMsgData={setMsgData} />}
+       { displayAlert&&<ConfirmAlert message='Are you sure you want to delete this blog post? This action cannot be undone.' onCancel={handleCancel} onConfirm={handleConfirm}/>}
+
+
+        </>
     );
 };
 
