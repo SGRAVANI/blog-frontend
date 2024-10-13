@@ -154,7 +154,10 @@ import { useNavigate } from 'react-router-dom';
 
 const CreateBlog = () => {
   const [locationData, setLocationData] = useState({ city: '', country: '', state: '' });
-  let user = JSON.parse(window.localStorage.getItem('user'));
+  let [user,setUser]=useState(null)
+
+
+//   let user = JSON.parse(window.localStorage.getItem('user'));
 
   const [newBlog, setNewBlog] = useState({
     title: '',
@@ -162,7 +165,7 @@ const CreateBlog = () => {
     content: '',
     subheading: '',
     labels: '',
-    userId: user._id,
+    userId: '',
     location: { country: '', city: '', state: '' }
   });
 
@@ -170,6 +173,15 @@ const CreateBlog = () => {
 
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    if (typeof window !== 'undefined') {
+        if (localStorage.getItem("user")) {
+          let userData = localStorage.getItem("user");
+          setUser(JSON.parse(userData));
+          setNewBlog((prev)=>{return {...prev,userId:userData._id}})
+        }
+      }
+  },[])
   useEffect(() => {
     async function getLocation() {
       fetch('https://ipinfo.io/json?token=12eab02b76889c')

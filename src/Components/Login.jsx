@@ -51,9 +51,12 @@ let [loginStatus,setLoginStatus]=useState(false)
         setTimeout(()=>{
           if(d.message=="login successful")
             { 
+            if(typeof(window)!='undefined')
+            {
             window.localStorage.setItem("user",JSON.stringify(d.user))
             cont.setUserData(d.user)
             navigate('/blogs')
+            }
             }
         },500)
        

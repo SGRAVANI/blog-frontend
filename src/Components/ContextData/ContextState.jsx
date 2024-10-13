@@ -4,11 +4,15 @@ function ContextState(props) {
    let [blogId,setBlogId]=useState('')
     let [userData,setUserData]=useState(null)
     useEffect(()=>{
-        if(localStorage.getItem('user'))
-        {
-            let data=localStorage.getItem('user')
-            setUserData(JSON.parse(data))
-        }
+
+
+        if (typeof window !== 'undefined') {
+            if(localStorage.getItem('user'))
+                {
+                    let data=localStorage.getItem('user')
+                    setUserData(JSON.parse(data))
+                }          }
+        
     },[])
 
   return (

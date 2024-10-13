@@ -29,9 +29,12 @@ function NavBar() {
           <button
             className='px-5 py-2 text-white font-bold bg-blue-500 hover:brightness-125 transition-all duration-100 text-lg rounded-md'
             onClick={() => {
+              if(typeof(window)!='undefined')
+              {
               localStorage.removeItem('user'); // update localstorage
               cont.setUserData(null)
               navigate("/")
+              }
             }}
           >
             Logout

@@ -15,11 +15,19 @@ const Blogs = () => {
     const[delteConfirmation,setDeleteConfirmation]=useState({id:'',status:false})
     const [msgData,setMsgData]=useState({message:"",variant:"",f:""})
     let cont=useContext(Context)
-   let user=JSON.parse(localStorage.getItem("user"))
-   
+   //let user=JSON.parse(localStorage.getItem("user"))
+   let [user,setUser]=useState(null)
    let [f,setF]=useState(false)
    
    let navigate=useNavigate()
+   useEffect(() => {
+    if (typeof window !== 'undefined') {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            setUser(JSON.parse(userData));
+        }
+    }
+}, []);
   // console.log(cont.userData,"cont")
     useEffect(() => {
         // Fetch blogs from the backend
@@ -37,7 +45,9 @@ const Blogs = () => {
         //     console.log(e.message)
         // }
         // };
+        
         const fetchBlogs = async () => {
+            if (!user) return; 
             // const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/getblogs');
         try{
             // const response = await fetch(`http://localhost:8000/api/v1/user/getuserblogs?userId=${user._id}`, {
@@ -59,11 +69,14 @@ const Blogs = () => {
         }
         };
         // Set a greeting message
+        if(user)
+        {
         const userName =user.name // Replace this with the actual user's name from login
         setGreeting(`Welcome, ${userName}!`);
         
         fetchBlogs();
-    }, [f]);
+        }
+    }, [f,user]);
   
 
    function handleDelete(id)
