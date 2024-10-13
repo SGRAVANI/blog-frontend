@@ -100,7 +100,9 @@ const Blogs = () => {
         {      console.log(delteConfirmation)
         try {
             console.log(`http://localhost:8000/api/v1/user/deleteblog/${delteConfirmation.id}`)
-            const response =await fetch(`http://localhost:8000/api/v1/user/deleteblog/${delteConfirmation.id}`, {
+            //https://blog-backend-veru.onrender.com
+            // const response =await fetch(`http://localhost:8000/api/v1/user/deleteblog/${delteConfirmation.id}`, {
+                const response =await fetch(`https://blog-backend-veru.onrender.com/api/v1/user/deleteblog/${delteConfirmation.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
