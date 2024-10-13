@@ -26,7 +26,7 @@ let [loginStatus,setLoginStatus]=useState(false)
         password: formData.password,
     };
 //  fetch("https://blog-backend-veru.onrender.com/api/v1/user/login"
-    // fetch("http://localhost:8000/api/v1/user/login", {
+    //  fetch("http://localhost:8000/api/v1/user/login", {
       fetch("https://blog-backend-veru.onrender.com/api/v1/user/login", {
         method: "POST",
         body: JSON.stringify(payload),

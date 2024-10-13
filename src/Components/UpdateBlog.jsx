@@ -29,7 +29,7 @@ const UpdateBlog = () => {
        
                     // const response = await fetch('https://blog-backend-veru.onrender.com/api/v1/getblogs');
         try{
-            const response = await fetch(`http://localhost:8000/api/v1/user/getblogbyid/${cont.blogId}`);
+            const response = await fetch(`https://blog-backend-veru.onrender.com/api/v1/user/getblogbyid/${cont.blogId}`);
             const data = await response.json();
             setBlog(data.data);
             setBlog((prev)=>{return {...prev,labels:prev.labels.join(',')}})

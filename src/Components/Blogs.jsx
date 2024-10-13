@@ -108,7 +108,7 @@ const Blogs = () => {
                     'Content-Type': 'application/json',
                 },
             });
-             console.log(response)
+             //console.log(response)
             if (!response.ok) {
                 setMsgData({msg:"Error occured while deleting",variant:"error",f:true})
                 throw new Error('Failed to delete the blog');
