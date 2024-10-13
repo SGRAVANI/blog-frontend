@@ -19,7 +19,7 @@ let [loginStatus,setLoginStatus]=useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login form data:', formData);
+   // console.log('Login form data:', formData);
 
     let payload = {
         email: formData.email,

@@ -145,7 +145,7 @@ const Blogs = () => {
              <button onClick={()=>{navigate("/newblog")}} className='mt-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:from-indigo-500 hover:to-purple-600 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl'>Create New Blog</button>
             </div>
             <div className="mt-4">
-                <h2 className="text-2xl font-semibold">Available Blogs</h2>
+                <h2 className="text-2xl font-semibold">Your Blogs</h2>
                
                 <UserBlogList onDelete={handleDelete} onUpdate={handleUpdate} blogs={blogs} user={user} />
             </div>
