@@ -17,6 +17,7 @@ function NavBar() {
         <div>
             <NavLink to="/" className='text-3xl font-bold'>Home</NavLink>
         </div>
+        <div className='flex justify-end gap-5'>
         {!cont.userData && (
           <button
             className='px-5 py-2 text-white font-bold bg-gray-950 hover:bg-black hover:text-white transition-all duration-100 text-lg rounded-md'
@@ -25,7 +26,11 @@ function NavBar() {
             SignIn
           </button>
         )}
-        {cont.userData && (
+        {cont.userData && (<>
+            <button className='px-5 py-2 text-white font-bold bg-gray-950 hover:bg-black hover:text-white transition-all duration-100 text-lg rounded-md' onClick={()=>{
+            navigate("/blogs")
+           }}>My Blogs</button>
+         
           <button
             className='px-5 py-2 text-white font-bold bg-blue-500 hover:brightness-125 transition-all duration-100 text-lg rounded-md'
             onClick={() => {
@@ -39,7 +44,11 @@ function NavBar() {
           >
             Logout
           </button>
+           
+          </>
         )}
+        
+        </div>
       </div>
     </div>
   );
